@@ -6,9 +6,31 @@ test "samanta no tiene ingredientes" {
 }
 
 test "sonia con cuchara y sin ingredientes tiene habilidad 3" {
+	const chocolate = new Ingrediente(cantidad = 1000)
+	sonia.ingredientes([chocolate])
 	sonia.descartarIngredientes()
 	sonia.instrumento(cuchara)
-	assert.equals(sonia.habilidad(), 3)
+	assert.equals(sonia.nivelDeHabilidad(), 3)
+}
+
+test "Sonia con 400 gr de azucar y su cuaderno de recetas con 5 páginas tiene habilidad de 6.4 " {
+	const azucar = new Ingrediente(cantidad = 400)
+	sonia.ingredientes([azucar])
+	cuadernoDeRecetas.paginas(5)
+	sonia.instrumento(cuadernoDeRecetas)
+	assert.equals(sonia.nivelDeHabilidad(), 6.4)
+}
+
+test "Marcos con 600 gr de chocolate, y 300 gr de azucar tiene una habilidad de 6.9" {
+	const chocolate = new Ingrediente(cantidad = 600)
+	const azucar = new Ingrediente(cantidad = 300)
+	marcos.ingredientes([chocolate, azucar])
+	assert.that(marcos.nivelDeHabilidad() == 6.9)
+}
+
+test "Antes de arrancar el programa, la más habilidosa es samanta" {
+	programa.concursantes([marcos, sonia, samanta])
+	assert.equals(programa.elMasHabilidoso(), samanta)
 }
 
 test "samanta no puede preparar su postre favorito" {
