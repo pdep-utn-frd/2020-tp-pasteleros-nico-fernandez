@@ -1,15 +1,15 @@
 object programa {
 	var property concursantes = [] 
 	
-	method elMasHabilidoso() { // Me dice quien es el mas habilidoso
+	method elMasHabilidoso() {
 		return concursantes.max({unConcursante => unConcursante.nivelDeHabilidad()})
 	}
 	
-	method elMenosHabilidoso() { // Me dice quien es el menos habilidoso
+	method elMenosHabilidoso() {
 		return concursantes.min({unConcursante => unConcursante.nivelDeHabilidad()})
 	}
 	
-	method diferenciaMejorYPeor() { // Me dice la diferencia entre los neiveles de habilidad de los anteriores.
+	method diferenciaMejorYPeor() {
 		return self.elMasHabilidoso().nivelDeHabilidad() - self.elMenosHabilidoso().nivelDeHabilidad()
 	}
 }
@@ -21,18 +21,39 @@ object marcos {
 	method nivelDeHabilidad(){
 		return aniosDeExperiencia + ingredientes.sum({unIngrediente => unIngrediente.cantidad()}) / 1000
 	}
+	
+	method tieneUnBuenDia() {
+		return self.nivelDeHabilidad() > 5
+	}
+	
+	method puedePrepararSuPostreFavorito() {
+		return ingredientes.size().even() and azucar.cantidad() >= 100 and self.tieneUnBuenDia()
+		// Aqui tengo un warning en la constante azucar pero no se porque.
+	}
 }
 
 // Uso una clase para los ingredientes ya que todos tienen en común el atributo cantidad.
 
 class Ingrediente {
 	var property cantidad
+
 }
+
+// Inicializo los ingredientes base.
+const chocolate = new Ingrediente()
+const azucar = new Ingrediente()
+const harina = new Ingrediente()
+const manteca = new Ingrediente()
 
 object samanta {
 	const property ingredientes = []
+	
 	method nivelDeHabilidad() {
 		return 9
+	}
+	
+	method puedePrepararSuPostreFavorito() {
+		return false
 	}
 }
 
@@ -46,6 +67,10 @@ object sonia {
 	
 	method descartarIngredientes() {
 		ingredientes.clear()
+	}
+	
+	method puedePrepararSuPostreFavorito() {
+		return ingredientes.contains(chocolate) and self.instrumento().suerte() > 5
 	}
 }
 

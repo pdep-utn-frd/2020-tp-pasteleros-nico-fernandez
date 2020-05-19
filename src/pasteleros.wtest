@@ -6,7 +6,7 @@ test "samanta no tiene ingredientes" {
 }
 
 test "sonia con cuchara y sin ingredientes tiene habilidad 3" {
-	const chocolate = new Ingrediente(cantidad = 1000)
+	chocolate.cantidad(1000)
 	sonia.ingredientes([chocolate])
 	sonia.descartarIngredientes()
 	sonia.instrumento(cuchara)
@@ -14,7 +14,7 @@ test "sonia con cuchara y sin ingredientes tiene habilidad 3" {
 }
 
 test "Sonia con 400 gr de azucar y su cuaderno de recetas con 5 páginas tiene habilidad de 6.4 " {
-	const azucar = new Ingrediente(cantidad = 400)
+	azucar.cantidad(300)
 	sonia.ingredientes([azucar])
 	cuadernoDeRecetas.paginas(5)
 	sonia.instrumento(cuadernoDeRecetas)
