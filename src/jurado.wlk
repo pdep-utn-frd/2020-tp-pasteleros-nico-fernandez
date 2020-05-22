@@ -8,15 +8,23 @@ object jurado {
 	}
 }
 
-// 10 - (Cantidad de ingredientes de la torta requerida - cantidad de ingredientes utilizados)  - (Tiempo de cocción requerido - Tiempo de cocción empleado). 
-
-
 object tortaWollok {
 	const property ingredientes = [
 		new Ingrediente(tipo = "chocolate", cantidad = 500),
 		new Ingrediente(tipo = "harina", cantidad = 600),
 		new Ingrediente(tipo = "azucar", cantidad = 300),
 		new Ingrediente(tipo = "manteca", cantidad = 100)
+	]
+	const property tiempoDeCoccion = 50
+	const property repostero = "Donato"
+}
+
+object lemonPie {
+	const property ingredientes = [
+		new Ingrediente(tipo = "limon", cantidad = 1100),
+		new Ingrediente(tipo = "mousse", cantidad = 200),
+		new Ingrediente(tipo = "azucar", cantidad = 500),
+		new Ingrediente(tipo = "mermelada", cantidad = 100)
 	]
 	const property tiempoDeCoccion = 50
 	const property repostero = "Donato"

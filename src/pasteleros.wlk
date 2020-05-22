@@ -30,8 +30,8 @@ object marcos {
 		new Ingrediente(tipo = "harina", cantidad = 400),
 		new Ingrediente(tipo = "azucar", cantidad = 300)
 	]
-	var property ingredientesUtilizados = 0
-	var property tiempoDeCoccionEmpleado = 30
+	var property ingredientesUtilizados
+	var property tiempoDeCoccionEmpleado
 	
 	method nivelDeHabilidad(){
 		return (aniosDeExperiencia + ingredientes.sum({unIngrediente => unIngrediente.cantidad()}) / 1000).min(10)
@@ -55,13 +55,13 @@ object marcos {
 
 	// TO DO
 	method hacerPruebaTecnicaDe(tipoDeTorta){
-		ingredientesUtilizados = self.cantidadDeIngredientesPara(tipoDeTorta)
+		//ingredientesUtilizados = self.cantidadDeIngredientesPara(tipoDeTorta)
 		tiempoDeCoccionEmpleado = tipoDeTorta.tiempoDeCoccion()
 	}
 	
 	// TO DO
 	method cantidadDeIngredientesPara(tipoDeTorta) {
-		return (tipoDeTorta.ingredientes().sum({unIngrediente => unIngrediente.cantidad()})).min(self.ingredientes().sum({unIngrediente => unIngrediente.cantidad()}))
+		
 	}
 }
 
@@ -76,10 +76,6 @@ object samanta {
 	
 	method puedePrepararSuPostreFavorito() {
 		return false
-	}
-	
-	method tiempoDeCoccion() {
-		return 50
 	}
 	
 	method hacerPruebaTecnicaDe(tipoDeTorta){
@@ -113,15 +109,18 @@ object sonia {
 		 tiempoDeCoccionEmpleado = tipoDeTorta.tiempoDeCoccion() * 10 / self.nivelDeHabilidad()
 	}
 	
+	// Funciona, pero revisar para mejoras.
 	method cantidadDeIngredienteFavorito(tipoDeTorta) {
-		return (tipoDeTorta.ingredientes().sum({unIngrediente => unIngrediente.cantidad()})).min(ingrediente.cantidad())
-		// Evalua la cantidad de los ingredientes de la torta y lo compara con la cantidad de su ingrediente favorito,
-		// luego retorna la cantidad menor. 
+		var ingredienteEnLaTorta 
+		
+		ingredienteEnLaTorta = tipoDeTorta.ingredientes().findOrElse({unIngrediente => unIngrediente.tipo() == ingrediente.tipo()}, {""})
+		if (ingredienteEnLaTorta == "") {
+			return 0
+		}
+		else 
+			return ingredienteEnLaTorta.cantidad().min(ingrediente.cantidad())
 	}
-	
-	
 }
-
 
 object cuadernoDeRecetas {
 	var property paginas = 4 // Puede añadir mas páginas a su cuaderno
