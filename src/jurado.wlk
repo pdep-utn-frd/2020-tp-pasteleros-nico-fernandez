@@ -1,7 +1,7 @@
 import pasteleros.*
 
 object jurado {
-	const property platos = [tortaWollok]
+	const property platos = [tortaWollok, lemonPie]
 	
 	method puntajeDe(pastelero, tipoDeTorta){
 		return 10 - (tipoDeTorta.ingredientes().sum({unIngrediente => unIngrediente.cantidad()}) - pastelero.ingredientesUtilizados()) - (tipoDeTorta.tiempoDeCoccion() - pastelero.tiempoDeCoccionEmpleado())

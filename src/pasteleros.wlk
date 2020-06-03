@@ -1,18 +1,42 @@
 import jurado.*
 
 object programa {
-	const pasteleros = [marcos, sonia, samanta] 
+	const pasteleros = [marcos, sonia, samanta]
+	var pastelerosConPostreFavorito = [] 
 	
+	// El pastelero más habilidoso
 	method elMasHabilidoso() {
 		return pasteleros.max({unPastelero => unPastelero.nivelDeHabilidad()})
 	}
 	
+	// El pastelero menos habilidoso
 	method elMenosHabilidoso() {
 		return pasteleros.min({unPastelero => unPastelero.nivelDeHabilidad()})
 	}
 	
+	// Diferencia de habilidad entre el pastelero más habilidoso y menos habilidoso
 	method diferenciaMejorYPeor() {
 		return self.elMasHabilidoso().nivelDeHabilidad() - self.elMenosHabilidoso().nivelDeHabilidad()
+	}
+	
+	// Coleccioón de pasteleros que pueden preparar su postre favorito
+	method pastelerosQuePuedenPrepararPostreFavorito(){
+		pastelerosConPostreFavorito = pasteleros.filter({unPastelero => unPastelero.puedePrepararSuPostreFavorito()})
+	}
+	
+	// El pastelero mas habilidoso que puede preparar su postre favorito 
+	method elMasHabilidosoConPostreFavorito() {
+		return pastelerosConPostreFavorito.max({unPastelero => unPastelero.nivelDeHabilidad()})
+	}
+	
+	// El pastelero menos habilidoso que puede preparar su postre favorito 
+	method elMenosHabilidosoConPostreFavorito() {
+		return pastelerosConPostreFavorito.min({unPastelero => unPastelero.nivelDeHabilidad()})
+	}
+	
+	// Diferencia de habilidad entre los dos anteriores
+	method diferenciaMejorYPeorconPostreFavorito() {
+		return self.elMasHabilidosoConPostreFavorito().nivelDeHabilidad() - self.elMenosHabilidosoConPostreFavorito().nivelDeHabilidad()
 	}
 }
 
@@ -21,6 +45,8 @@ object programa {
 class Ingrediente {
 	var property cantidad // en gramos
 	var property tipo
+	
+
 }
 
 object marcos {
@@ -59,10 +85,28 @@ object marcos {
 		tiempoDeCoccionEmpleado = tipoDeTorta.tiempoDeCoccion()
 	}
 	
-	// TO DO
-	method cantidadDeIngredientesPara(tipoDeTorta) {
+//	method calcularIngredientes(i, tipoDeTorta) {
+//		if (ingredientes.any({unIngrediente => unIngrediente.tipo() == tipoDeTorta.ingredientes().get(i).tipo()})){
+//			ingredientesUtilizados = unIngrediente.cantidad().min(tipoDeTorta.ingredientes().get(i).cantidad())
+//		}
+//	}
+//	
+//	// TO DO
+//	method cantidadDeIngredientesPara(tipoDeTorta) {
+//		var cuantosIngredientesEnLaTorta
+//		cuantosIngredientesEnLaTorta = tipoDeTorta.ingredientes().size()
+//				
+//		var ingredientesEnLaTorta = []
+//		var ingredientesDeMarcos = []
+//		var cantidadDeIngredientesEnLaTorta = []
+//		var cantidadDeIngredientesDeMarcos = []
+//
+//		ingredientesEnLaTorta = tipoDeTorta.ingredientes().map({unIngrediente => unIngrediente.tipo()})
+//		cantidadDeIngredientesEnLaTorta = tipoDeTorta.ingredientes().map({unIngrediente => unIngrediente.cantidad()})
+//		ingredientesDeMarcos = ingredientes.map({unIngrediente => unIngrediente.tipo()})
+//		cantidadDeIngredientesDeMarcos = ingredientes.map({unIngrediente => unIngrediente.cantidad()})
 		
-	}
+		
 }
 
 object samanta {
@@ -105,12 +149,12 @@ object sonia {
 	}
 	
 	method hacerPruebaTecnicaDe(tipoDeTorta) {
-		 ingredientesUtilizados = self.cantidadDeIngredienteFavorito(tipoDeTorta)
+		 ingredientesUtilizados = self.cantidadDeIngredienteFavoritoPara(tipoDeTorta)
 		 tiempoDeCoccionEmpleado = tipoDeTorta.tiempoDeCoccion() * 10 / self.nivelDeHabilidad()
 	}
 	
 	// Funciona, pero revisar para mejoras.
-	method cantidadDeIngredienteFavorito(tipoDeTorta) {
+	method cantidadDeIngredienteFavoritoPara(tipoDeTorta) {
 		var ingredienteEnLaTorta 
 		
 		ingredienteEnLaTorta = tipoDeTorta.ingredientes().findOrElse({unIngrediente => unIngrediente.tipo() == ingrediente.tipo()}, {""})
