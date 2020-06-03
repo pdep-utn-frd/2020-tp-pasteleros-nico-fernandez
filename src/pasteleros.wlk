@@ -50,13 +50,14 @@ class Ingrediente {
 }
 
 object marcos {
+	var property i = 0
 	const property aniosDeExperiencia = 6
 	const property ingredientes = [
 		new Ingrediente(tipo = "chocolate", cantidad = 1200),
 		new Ingrediente(tipo = "harina", cantidad = 400),
 		new Ingrediente(tipo = "azucar", cantidad = 300)
 	]
-	var property ingredientesUtilizados
+	var property ingredientesUtilizados = 0
 	var property tiempoDeCoccionEmpleado
 	
 	method nivelDeHabilidad(){
@@ -79,34 +80,33 @@ object marcos {
 		ingredientes.add(unIngrediente)
 	}
 
-	// TO DO
 	method hacerPruebaTecnicaDe(tipoDeTorta){
-		//ingredientesUtilizados = self.cantidadDeIngredientesPara(tipoDeTorta)
+		ingredientesUtilizados = self.cuantoNecesita(tipoDeTorta)
 		tiempoDeCoccionEmpleado = tipoDeTorta.tiempoDeCoccion()
 	}
 	
-//	method calcularIngredientes(i, tipoDeTorta) {
-//		if (ingredientes.any({unIngrediente => unIngrediente.tipo() == tipoDeTorta.ingredientes().get(i).tipo()})){
-//			ingredientesUtilizados = unIngrediente.cantidad().min(tipoDeTorta.ingredientes().get(i).cantidad())
-//		}
-//	}
-//	
-//	// TO DO
-//	method cantidadDeIngredientesPara(tipoDeTorta) {
-//		var cuantosIngredientesEnLaTorta
-//		cuantosIngredientesEnLaTorta = tipoDeTorta.ingredientes().size()
-//				
-//		var ingredientesEnLaTorta = []
-//		var ingredientesDeMarcos = []
-//		var cantidadDeIngredientesEnLaTorta = []
-//		var cantidadDeIngredientesDeMarcos = []
-//
-//		ingredientesEnLaTorta = tipoDeTorta.ingredientes().map({unIngrediente => unIngrediente.tipo()})
-//		cantidadDeIngredientesEnLaTorta = tipoDeTorta.ingredientes().map({unIngrediente => unIngrediente.cantidad()})
-//		ingredientesDeMarcos = ingredientes.map({unIngrediente => unIngrediente.tipo()})
-//		cantidadDeIngredientesDeMarcos = ingredientes.map({unIngrediente => unIngrediente.cantidad()})
+	method cuantoNecesita(tipoDeTorta) {
+		i = 0
+		ingredientesUtilizados = 0
+		ingredientes.forEach({unIngrediente => self.calcularIngredientes(tipoDeTorta)})
+		return ingredientesUtilizados
+	}
+	
+	
+	method calcularIngredientes(tipoDeTorta) {		
+		var ingredienteEncontrado
+		ingredienteEncontrado = ingredientes.filter({unIngrediente => unIngrediente.tipo() == tipoDeTorta.ingredientes().get(i).tipo()})
 		
-		
+		if (ingredienteEncontrado != []){
+			ingredientesUtilizados += ingredientes.get(i).cantidad().min(tipoDeTorta.ingredientes().get(i).cantidad())
+			i = (i + 1).min(tipoDeTorta.ingredientes().size())
+			return ingredientesUtilizados
+		}
+		else
+			i = (i + 1).min(tipoDeTorta.ingredientes().size())
+			return 0
+
+	}
 }
 
 object samanta {
