@@ -1,7 +1,7 @@
 import jurado.*
 
 object programa {
-	const pasteleros = [marcos, sonia, samanta]
+	const property pasteleros = [marcos, sonia, samanta, nicolas]
 	var pastelerosConPostreFavorito = [] 
 	
 	// El pastelero más habilidoso
@@ -182,7 +182,36 @@ object cuchara {
 }
 
 object nicolas {
+	const property aniosDeExperiencia = 6
+	// Tiene dos ingredientes uno dulce y uno salado
+	const property ingredientes = [
+		new Ingrediente(tipo = "dulce de leche", cantidad = 800),
+		new Ingrediente(tipo = "papas", cantidad = 700)
+	]
 	
+	// Su nivel de habilidad aumenta con respecto a la cantidad de oponentes que tenga en el concurso 
+	// más la suma de las cantidades de sus ingredientes mas la suerte que le otorgue su sombrero de chef
+	method nivelDeHabilidad() {
+		return (programa.pasteleros().size() - 1) + ingredientes.sum({unIngrediente => unIngrediente.cantidad()}) / 1000 + sombreroDeChef.suerte()
+	}
+	
+	method agregar(unIngrediente) {
+		ingredientes.add(unIngrediente)
+	}
+	
+	// Puede preparar su ppostre favorito si su sombrero le da una suerte de almenos 5 y si dentro de sus ingredientes hay dulce 
+	// de leche, ya que se lo pone a todo.
+	method puedePrepararSuPostreFavorito() {
+		return sombreroDeChef.suerte() > 5 and ingredientes.any({unIngrediente => unIngrediente.tipo() == "dulce de leche"})
+	}
+}
+
+object sombreroDeChef {
+	const antiguedad = 4
+	
+	method suerte() {
+		return antiguedad * 1.5
+	}
 }
 
 
