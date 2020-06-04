@@ -4,7 +4,7 @@ object jurado {
 	const property platos = [tortaWollok, lemonPie]
 	
 	method puntajeDe(pastelero, tipoDeTorta){
-		return 10 - (tipoDeTorta.ingredientes().sum({unIngrediente => unIngrediente.cantidad()}) - pastelero.ingredientesUtilizados()) - (tipoDeTorta.tiempoDeCoccion() - pastelero.tiempoDeCoccionEmpleado())
+		return 10 - (tipoDeTorta.ingredientes().sum({unIngrediente => unIngrediente.cantidad()}) / 1000 - pastelero.ingredientesUtilizados()) / 1000  - (tipoDeTorta.tiempoDeCoccion() - pastelero.tiempoDeCoccionEmpleado())
 	}
 }
 

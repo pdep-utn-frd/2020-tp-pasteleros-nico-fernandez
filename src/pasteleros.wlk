@@ -57,7 +57,7 @@ object marcos {
 		new Ingrediente(tipo = "harina", cantidad = 400),
 		new Ingrediente(tipo = "azucar", cantidad = 300)
 	]
-	var property ingredientesUtilizados = 0
+	var property ingredientesUtilizados
 	var property tiempoDeCoccionEmpleado
 	
 	method nivelDeHabilidad(){
@@ -86,8 +86,11 @@ object marcos {
 	}
 	
 	method cuantoNecesita(tipoDeTorta) {
+		// Inicializo el contador de ingredientes en 0
 		i = 0
+		// Lo siguiente reinicia la cantidad de ingredientes para cuando quiera cambiar de torta
 		ingredientesUtilizados = 0
+		// Por cada ingrediente que tenga marcos ejecutar el metodo
 		ingredientes.forEach({unIngrediente => self.calcularIngredientes(tipoDeTorta)})
 		return ingredientesUtilizados
 	}
@@ -95,14 +98,20 @@ object marcos {
 	
 	method calcularIngredientes(tipoDeTorta) {		
 		var ingredienteEncontrado
+		
+		// Filtra una lista de un solo elemento, este elemento será algún ingrediente de marcos
+		// cuyo tipo sea igual al tipo del ingrediente de la torta cuyo indice sea i (comienza en 0, el primer ingrediente)
 		ingredienteEncontrado = ingredientes.filter({unIngrediente => unIngrediente.tipo() == tipoDeTorta.ingredientes().get(i).tipo()})
 		
+		// Si encontro alguno, es decir si la lista no es vacia entonces evalua las cantidades de ambos y acumula la menor.
+		// Luego incrementa en 1 el indice para que pase al proximo ingrediente de la torta
 		if (ingredienteEncontrado != []){
 			ingredientesUtilizados += ingredientes.get(i).cantidad().min(tipoDeTorta.ingredientes().get(i).cantidad())
 			i = (i + 1).min(tipoDeTorta.ingredientes().size())
 			return ingredientesUtilizados
 		}
 		else
+			// Si la lista es vacia entonces pasa al siguiente ingrediente pero no acumula nada.
 			i = (i + 1).min(tipoDeTorta.ingredientes().size())
 			return 0
 
@@ -183,26 +192,54 @@ object cuchara {
 
 object nicolas {
 	const property aniosDeExperiencia = 6
-	// Tiene dos ingredientes uno dulce y uno salado
+	// Tiene dos ingredientes uno dulce y uno salado pero puede agregar mas.
 	const property ingredientes = [
 		new Ingrediente(tipo = "dulce de leche", cantidad = 800),
 		new Ingrediente(tipo = "papas", cantidad = 700)
 	]
+	var property ingredientesUtilizados
+	var property tiempoDeCoccionEmpleado
+	
 	
 	// Su nivel de habilidad aumenta con respecto a la cantidad de oponentes que tenga en el concurso 
 	// más la suma de las cantidades de sus ingredientes mas la suerte que le otorgue su sombrero de chef
 	method nivelDeHabilidad() {
-		return (programa.pasteleros().size() - 1) + ingredientes.sum({unIngrediente => unIngrediente.cantidad()}) / 1000 + sombreroDeChef.suerte()
+		return (programa.pasteleros().size() - 1) + (ingredientes.sum({unIngrediente => unIngrediente.cantidad()}) / 1000) + sombreroDeChef.suerte()
 	}
 	
 	method agregar(unIngrediente) {
 		ingredientes.add(unIngrediente)
 	}
 	
-	// Puede preparar su ppostre favorito si su sombrero le da una suerte de almenos 5 y si dentro de sus ingredientes hay dulce 
+	// Puede preparar su postre favorito si su sombrero le da una suerte de al menos 5 y si dentro de sus ingredientes hay dulce 
 	// de leche, ya que se lo pone a todo.
 	method puedePrepararSuPostreFavorito() {
 		return sombreroDeChef.suerte() > 5 and ingredientes.any({unIngrediente => unIngrediente.tipo() == "dulce de leche"})
+	}
+	
+	// Para hacer la prueba tecnica, nicolas utiliza todo el dulce de leche que tiene y coloca solo 100 de los demas ingredientes.
+	// No importa que la torta no lo requiera, el los coloca igual.
+	// Su tiempo de cocción es el doble requerido por la torta.
+	method hacerPruebaTecnicaDe(tipoDeTorta) {
+		 ingredientesUtilizados = self.cantidadDeIngredienteFavoritoPara(tipoDeTorta) + self.cantidadDeLosDemasIngredientes()
+		 tiempoDeCoccionEmpleado = tipoDeTorta.tiempoDeCoccion() * 2
+	}
+	
+	method cantidadDeIngredienteFavoritoPara(tipoDeTorta) {
+		var ingredienteDulceDeLeche
+		ingredienteDulceDeLeche = ingredientes.findOrElse({unIngrediente => unIngrediente.tipo() == "dulce de leche"}, {""})
+		
+		if (ingredienteDulceDeLeche == "") {
+			return 0
+		}
+		else
+			return ingredienteDulceDeLeche.cantidad()
+		
+	}
+	
+	method cantidadDeLosDemasIngredientes() {
+		ingredientes.removeAllSuchThat({unIngrediente => unIngrediente.tipo() == "dulce de leche"})
+		return ingredientes.sum({unIngrediente => unIngrediente.cantidad().min(100)})
 	}
 }
 
