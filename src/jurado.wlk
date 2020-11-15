@@ -1,31 +1,64 @@
 import pasteleros.*
+import tortas.*
 
 object jurado {
-	const property platos = [tortaWollok, lemonPie]
+	const property platos = []
+	const property pasteleros = [marcos, sonia, samanta, nicolas]
+	var pastelerosConPostreFavorito = []
+	var property tortaModelo // puedo cambiar la torta a preparar
 	
-	method puntajeDe(pastelero, tipoDeTorta){
-		return 10 - (tipoDeTorta.ingredientes().sum({unIngrediente => unIngrediente.cantidad()}) / 1000 - pastelero.ingredientesUtilizados()) / 1000  - (tipoDeTorta.tiempoDeCoccion() - pastelero.tiempoDeCoccionEmpleado())
+	// El pastelero más habilidoso
+	method elMasHabilidoso() {
+		return pasteleros.max({unPastelero => unPastelero.nivelDeHabilidad()})
 	}
+	
+	// El pastelero menos habilidoso
+	method elMenosHabilidoso() {
+		return pasteleros.min({unPastelero => unPastelero.nivelDeHabilidad()})
+	}
+	
+	// Diferencia de habilidad entre el pastelero más habilidoso y menos habilidoso
+	method diferenciaMejorYPeor() {
+		return self.elMasHabilidoso().nivelDeHabilidad() - self.elMenosHabilidoso().nivelDeHabilidad()
+	}
+	
+	// Coleccioón de pasteleros que pueden preparar su postre favorito
+	method pastelerosQuePuedenPrepararPostreFavorito(){
+		pastelerosConPostreFavorito = pasteleros.filter({unPastelero => unPastelero.puedePrepararSuPostreFavorito()})
+	}
+	
+	// El pastelero mas habilidoso que puede preparar su postre favorito 
+	method elMasHabilidosoConPostreFavorito() {
+		return pastelerosConPostreFavorito.max({unPastelero => unPastelero.nivelDeHabilidad()})
+	}
+	
+	// El pastelero menos habilidoso que puede preparar su postre favorito 
+	method elMenosHabilidosoConPostreFavorito() {
+		return pastelerosConPostreFavorito.min({unPastelero => unPastelero.nivelDeHabilidad()})
+	}
+	
+	// Diferencia de habilidad entre los dos anteriores
+	method diferenciaMejorYPeorconPostreFavorito() {
+		return self.elMasHabilidosoConPostreFavorito().nivelDeHabilidad() - self.elMenosHabilidosoConPostreFavorito().nivelDeHabilidad()
+	}
+	
+	method presentarTorta(torta) {
+		platos.add(torta)
+	}
+	
+	//Cada participante debe elaborar una torta como la pedida, lo mejor que le salga, y presentársela al jurado.
+	method realizarPruebaTecnica(){
+		pasteleros.forEach{unPastelero => unPastelero.pruebaTecnica(tortaModelo)}
+	}
+	
+	method puntosPara(torta){
+		return 10 - (torta.cantidadTotal() - tortaModelo.cantidadTotal()).abs() - (torta.tiempoDeCoccion() - tortaModelo.tiempoDeCoccion()).abs()
+	}
+	
+	method ganadorPruebaTecnica(){
+		return platos.max({plato => self.puntosPara(plato)}).repostero()
+	}
+
 }
 
-object tortaWollok {
-	const property ingredientes = [
-		new Ingrediente(tipo = "chocolate", cantidad = 500),
-		new Ingrediente(tipo = "harina", cantidad = 600),
-		new Ingrediente(tipo = "azucar", cantidad = 300),
-		new Ingrediente(tipo = "manteca", cantidad = 100)
-	]
-	const property tiempoDeCoccion = 50
-	const property repostero = "Donato"
-}
 
-object lemonPie {
-	const property ingredientes = [
-		new Ingrediente(tipo = "limon", cantidad = 1100),
-		new Ingrediente(tipo = "mousse", cantidad = 200),
-		new Ingrediente(tipo = "azucar", cantidad = 500),
-		new Ingrediente(tipo = "mermelada", cantidad = 100)
-	]
-	const property tiempoDeCoccion = 50
-	const property repostero = "Donato"
-}

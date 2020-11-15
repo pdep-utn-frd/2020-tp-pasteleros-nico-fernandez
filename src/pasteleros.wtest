@@ -1,42 +1,41 @@
 import pasteleros.*
+import jurado.*
+import tortas.*
 
 test "Marcos tiene 7.9 de habilidad" {
 	assert.equals(marcos.nivelDeHabilidad(), 7.9)
 }
 
-test "Sonia tiene 5 de habilidad inicialmetne" {
+test "Sonia tiene 4 de habilidad inicialmetne" {
 	assert.equals(sonia.nivelDeHabilidad(), 4)
 }
 
-test "samanta no tiene ingredientes" {
-	assert.that(samanta.ingredientes().isEmpty())
-}
 
 test "Samanta es la mas habilidosa" {
-	assert.equals(samanta, programa.elMasHabilidoso())
+	assert.equals(samanta, jurado.elMasHabilidoso())
 }
 
 test "La diferencia entre el mas habilidoso y el menos habilidosop es de 7.1" {
-	assert.equals(5, programa.diferenciaMejorYPeor())
+	assert.equals(5, jurado.diferenciaMejorYPeor())
 }
 
 
 
 test "Sonia con 400 gr de azucar y su cuaderno de recetas con 5 páginas tiene habilidad de 6.4 " {
-	sonia.cambiar(new Ingrediente(tipo = "azucar", cantidad = 400 ))
+	sonia.cambiar(new Ingrediente(tipo = "azucar", cantidad = 0.4 ))
 	cuadernoDeRecetas.paginas(5)
 	sonia.instrumento(cuadernoDeRecetas)
 	assert.equals(sonia.nivelDeHabilidad(), 6.4)
 }
 
 test "Marcos con 600 gr de chocolate, y 300 gr de azucar tiene una habilidad de 6.9" {
-	marcos.agregar(new Ingrediente(cantidad = 600, tipo = "chocolate"))
-	marcos.agregar(new Ingrediente(cantidad = 300, tipo = "azucar"))
+	marcos.agregarIngrediente("chocolate", 0.6)
+	marcos.agregarIngrediente("azucar", 0.3)
 	assert.equals(8.8, marcos.nivelDeHabilidad())
 }
 
-test "Antes de arrancar el programa, la más habilidosa es samanta" {
-	assert.equals(programa.elMasHabilidoso(), samanta)
+test "Antes de arrancar el programa, el más habilidoso es nicolas" {
+	assert.equals(jurado.elMasHabilidoso(), samanta)
 }
 
 test "samanta no puede preparar su postre favorito" {
