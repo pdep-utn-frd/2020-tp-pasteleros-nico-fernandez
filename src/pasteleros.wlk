@@ -126,7 +126,7 @@ object cuchara {
 
 object nicolas {
 	const property aniosDeExperiencia = 6
-	// Tiene solo dos ingredientes uno dulce y otro salado, pero puede agragar más.
+	// Tiene solo dos ingredientes uno dulce y otro salado, pero puede agregar más.
 	const property ingredientes = [
 		new Ingrediente(tipo = "dulce de leche", cantidad = 0.9),
 		new Ingrediente(tipo = "papas", cantidad = 0.1)
@@ -140,27 +140,26 @@ object nicolas {
 	
 	
 	// Puede preparar su postre favorito si su sombrero le da una suerte de al menos 5 y si dentro de sus ingredientes hay dulce 
-	// de leche, ya que se lo pone a todo.
+	// de leche.
 	method puedePrepararSuPostreFavorito() {
 		return sombreroDeChef.suerte() > 5 and ingredientes.any({unIngrediente => unIngrediente.tipo() == "dulce de leche"})
 	}
 
 	
-	// Para hacer la prueba tecnica, nicolas utiliza todos los ingredientes que tiene y coloca todo, no importa si se pasa o 
-	// le falta.
+	// Para hacer la prueba tecnica, nicolas utiliza todos los ingredientes que tiene y
 	// Su tiempo de cocción la mitad del requerido por la torta.
 	method pruebaTecnica(tipoDeTorta) {
-		const tortaDeNicolas = new Torta(tiempoDeCoccion = tipoDeTorta.tiempoDeCoccion(), repostero = self)
-		tipoDeTorta.ingredientes().forEach({unIngrediente => self.ponerIngrediente(tipoDeTorta, unIngrediente)})
-		jurado.presentarTorta(tortaDeNicolas)
+		jurado.presentarTorta(
+		new Torta (
+				ingredientes = ingredientes,
+				tiempoDeCoccion = tipoDeTorta.tiempoDeCoccion() / 2,
+				repostero = self
+			)
+		)
 	}
 	
 	method agregarIngrediente(tipo, cantidad) {
 		ingredientes.add(new Ingrediente(tipo = tipo, cantidad = cantidad))
-	}
-	
-	method ponerIngrediente(tipoDeTorta, ingrediente) {
-		tipoDeTorta.agregarIngrediente(ingrediente.tipo(), ingrediente.cantidad())
 	}
 	
 }
